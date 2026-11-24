@@ -1,0 +1,10 @@
+name="bhagya"
+age=20
+college="GCEM"
+fee=10000
+course='aiml'
+print(type(name))
+print(type(age))
+print(type(college))
+print(type(fee))
+print(type(course))
