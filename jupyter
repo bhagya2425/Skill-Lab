@@ -1,0 +1,53 @@
+import json
+import os
+import re
+import urllib.request
+
+sample_notes = """Website revamp kickoff
+
+Alex: What are the main features you want on the new landing page?
+Client: We need a modern hero section, customer testimonials, and a contact form.
+Alex: Would you prefer Calendly integration or a custom-built solution?
+Client: Calendly works fine and keeps it simple.
+Alex: Perfect, I'll prepare the initial wireframes by Wednesday.
+"""
+
+def offline_extract(notes):
+    """Extract lines in the format Name: task by deadline."""
+
+    actions = []
+
+    pattern = r"(\w+):\s*(.*?)\s+by\s+([A-Za-z]+)"
+
+    for line in notes.splitlines():
+
+        match = re.search(pattern, line, re.IGNORECASE)
+
+        if match:
+            name = match.group(1)
+            task = match.group(2)
+            deadline = match.group(3)
+
+            actions.append({
+                "name": name,
+                "task": task,
+                "deadline": deadline
+            })
+
+    return actions
+
+
+# Extract action items
+result = offline_extract(sample_notes)
+
+# Convert into JSON format
+json_output = json.dumps(result, indent=4)
+
+print("Extracted Action Items:")
+print(json_output)
+
+# Save results into a JSON file
+with open("action_items.json", "w") as file:
+    json.dump(result, file, indent=4)
+
+print("\nData saved successfully!")
